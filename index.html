@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Juan Storni – QA Tester</title>
+<meta name="description" content="Portfolio de Juan Storni, QA Tester: pruebas funcionales, de API y en Android. Proyectos Tijerapp y RolCam.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* VOICE: claro, directo, de alguien que prueba software y lo cuenta sin vueltas.
+   IDEA: la página se comporta como un reporte de ejecución de pruebas.
+   PICTURE: en la portada, una corrida de pruebas real de sus dos proyectos, con una falla que pasa a corregida.
+   COLOUR and TYPE: banda azul señal a todo el ancho, blanco, verde "pasó" y rojo "falla" solo con su significado; Onest para todo, JetBrains Mono solo dentro del reporte.
+   LAYOUT: portada azul con texto y reporte lado a lado, después proyectos, método, experiencia, certificaciones y contacto en azul. */
+:root{color-scheme:light dark;
+  --bg:light-dark(#f6f7fa,#10131a);--ink:light-dark(#151922,#e8ebf1);--muted:light-dark(#545e70,#9ba4b4);
+  --blue:light-dark(#1d44c8,#17298a);--panel:light-dark(#ffffff,#171c27);--line:light-dark(#dce1eb,#283042);
+  --pass:light-dark(#0f7d4a,#4cd696);--fail:light-dark(#cc3030,#ff7373);--soft:light-dark(#e8edfb,#1a2236);
+  --sans:"Onest",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"JetBrains Mono",ui-monospace,Consolas,monospace}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{scroll-padding-top:24px;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 var(--sans);overflow-x:clip}
+a{color:inherit}
+a:focus-visible,.btn:focus-visible{outline:3px solid #ffb703;outline-offset:3px;border-radius:6px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 max(5vw,16px)}
+.band{padding:clamp(52px,7vw,96px) 0}
+h1,h2,h3,h4{margin:0;line-height:1.08;text-wrap:balance}
+h2{font-size:clamp(30px,4vw,44px);font-weight:700;letter-spacing:-.02em}
+h3{font-size:clamp(26px,3vw,32px);font-weight:700;letter-spacing:-.01em}
+h4{font-size:17px;font-weight:700;margin:22px 0 8px}
+p{margin:0}
+.lead{color:var(--muted);max-width:62ch;margin-top:14px}
+
+/* portada */
+.hero{background:var(--blue);color:#fff}
+.nav{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 28px;padding-top:22px}
+.nav b{font-size:18px}
+.nav ul{display:flex;flex-wrap:wrap;gap:4px 22px;list-style:none;margin:0;padding:0}
+.nav a{text-decoration:none;opacity:.88;padding:8px 0;display:inline-block}
+.nav a:hover{opacity:1;text-decoration:underline;text-underline-offset:5px}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(28px,5vw,64px);align-items:center;padding:clamp(40px,6vw,80px) 0 clamp(56px,7vw,96px)}
+.hero h1{font-size:clamp(42px,6vw,64px);font-weight:700;letter-spacing:-.03em}
+.role{font-size:clamp(20px,2.2vw,24px);font-weight:500;margin-top:10px}
+.hero .intro{max-width:52ch;margin-top:20px;color:#dfe6ff}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.btn{display:inline-flex;align-items:center;min-height:48px;padding:0 22px;border-radius:999px;font-weight:700;text-decoration:none;border:2px solid #fff}
+.btn.main{background:#fff;color:#1a3bb0}
+.btn.alt{color:#fff}
+.btn:hover{transform:translateY(-1px)}
+.avail{margin-top:22px;font-size:15px;color:#cdd8ff}
+
+/* reporte de pruebas */
+.run{background:var(--panel);color:var(--ink);border-radius:18px;padding:22px 22px 18px;box-shadow:0 30px 60px -25px rgba(5,15,60,.55);font:14px/1.5 var(--mono)}
+.run-head{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding-bottom:12px;border-bottom:1px solid var(--line);font-weight:500}
+.run-head span{color:var(--muted);font-weight:400}
+.suite{margin:14px 0 2px;font-weight:500;color:var(--muted)}
+.run ul{list-style:none;margin:0;padding:0}
+.run li{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:10px;align-items:start;padding:7px 0;animation:rowIn .45s ease both;animation-delay:calc(var(--i) * .32s + .3s)}
+.ico{font-weight:700;color:var(--pass)}
+.st{font-size:12px;font-weight:500;color:var(--pass);white-space:nowrap}
+.swap{display:grid}.swap>*{grid-area:1/1}
+.was{color:var(--fail);opacity:0;animation:wasOut 3.6s ease both;animation-delay:calc(var(--i) * .32s + .3s)}
+.now{opacity:1;animation:nowIn 3.6s ease both;animation-delay:calc(var(--i) * .32s + .3s)}
+.run-foot{margin-top:12px;padding-top:12px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+@keyframes rowIn{from{opacity:0;transform:translateY(5px)}}
+@keyframes wasOut{0%,72%{opacity:1}100%{opacity:0}}
+@keyframes nowIn{0%,72%{opacity:0}100%{opacity:1}}
+
+/* proyectos */
+.proj{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(24px,4vw,56px);align-items:start;padding-top:clamp(40px,5vw,64px)}
+.proj+.proj{margin-top:clamp(40px,5vw,64px);border-top:1px solid var(--line)}
+.shot{position:relative;margin:0;aspect-ratio:16/10;border-radius:16px;overflow:hidden;display:grid;place-items:center}
+.shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.shot .ph{font-size:clamp(30px,4vw,44px);font-weight:700;letter-spacing:-.02em}
+.shot.tij{background:radial-gradient(circle at 75% 25%,#2b4fd6 0,transparent 55%),linear-gradient(135deg,#0d1a45,#14245e);color:#fff}
+.shot.tij .ph::first-letter{color:#ff4d5a}
+.shot.rol{background:radial-gradient(circle at 30% 70%,#a8571c 0,transparent 50%),linear-gradient(160deg,#1b1410,#2c1f16);color:#f3dfb8}
+.kind{color:var(--muted);font-size:19px;margin-top:6px}
+.proj p.desc{margin-top:14px;max-width:62ch}
+.checks{list-style:none;margin:0;padding:0}
+.checks li{position:relative;padding:5px 0 5px 30px}
+.checks li::before{content:"✓";position:absolute;left:4px;top:5px;color:var(--pass);font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;padding:0;list-style:none}
+.chips li{background:var(--soft);border-radius:999px;padding:4px 12px;font-size:14px}
+.links{display:flex;flex-wrap:wrap;gap:10px 24px;margin-top:20px}
+.links a{font-weight:700;color:light-dark(#1d44c8,#8fa8ff);text-underline-offset:4px;padding:6px 0}
+
+/* método */
+.method{background:var(--panel);border-block:1px solid var(--line)}
+.steps{list-style:none;margin:36px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px;counter-reset:s}
+.steps li{counter-increment:s;border-top:3px solid var(--blue);padding-top:16px}
+.steps li::before{content:counter(s);display:block;font-size:34px;font-weight:700;color:light-dark(#1d44c8,#8fa8ff);line-height:1;margin-bottom:10px}
+.steps b{display:block;font-size:19px;margin-bottom:6px}
+.steps p{color:var(--muted);font-size:16px}
+.ai{margin-top:44px;background:var(--soft);border-radius:16px;padding:22px 24px;max-width:820px}
+.ai b{display:block;margin-bottom:4px}
+
+/* experiencia */
+.jobs{list-style:none;margin:34px 0 0;padding:0}
+.jobs li{display:grid;grid-template-columns:150px minmax(0,1fr);gap:24px;padding:22px 0;border-top:1px solid var(--line)}
+.jobs time{font-weight:700;white-space:nowrap;color:var(--muted)}
+.jobs b{display:block;font-size:20px}
+.jobs span{display:block;color:var(--muted);margin-bottom:6px}
+.jobs p{max-width:66ch}
+.tools{margin-top:30px}
+
+/* certificaciones */
+.certs{list-style:none;margin:30px 0 0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 40px}
+.certs li{padding:14px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:16px}
+.certs small{color:var(--muted);font-size:15px;white-space:nowrap}
+
+/* contacto */
+.contact{background:var(--blue);color:#fff}
+.contact .lead{color:#dfe6ff}
+.ways{list-style:none;margin:34px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.ways a{display:block;height:100%;background:rgba(255,255,255,.1);border-radius:14px;padding:18px;text-decoration:none}
+.ways a:hover{background:rgba(255,255,255,.18)}
+.ways span{display:block;font-size:14px;color:#cdd8ff}
+.ways b{overflow-wrap:anywhere}
+footer{padding:26px 0;font-size:14px;color:var(--muted)}
+
+@media(max-width:900px){
+  .hero-grid,.proj{grid-template-columns:minmax(0,1fr)}
+  .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ways{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:600px){
+  body{font-size:16px}
+  .steps,.certs,.ways{grid-template-columns:minmax(0,1fr)}
+  .jobs li{grid-template-columns:minmax(0,1fr);gap:6px}
+  .run{padding:18px 16px 14px;font-size:13px}
+  .nav ul{gap:0 18px}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .run li,.was,.now{animation:none}
+  .btn:hover{transform:none}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <nav class="nav" aria-label="Secciones">
+      <b>Juan Storni</b>
+      <ul>
+        <li><a href="#proyectos">Proyectos</a></li>
+        <li><a href="#como-pruebo">Cómo pruebo</a></li>
+        <li><a href="#experiencia">Experiencia</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </nav>
+
+    <div class="hero-grid">
+      <div>
+        <h1>Juan Storni</h1>
+        <p class="role">QA Tester: pruebas funcionales, de API y en Android</p>
+        <p class="intro">Probé medios de pago: terminales legacy y Android, alta de tarjetas de crédito y débito, frontend y backend. Hoy también creo mis propios productos con ayuda de la IA y los pruebo de punta a punta, en dispositivos reales.</p>
+        <div class="actions">
+          <a class="btn main" href="#proyectos">Ver proyectos</a>
+          <a class="btn alt" href="cv.pdf">Descargar CV</a>
+        </div>
+        <p class="avail">Disponible para trabajo remoto en empresas de habla hispana.</p>
+      </div>
+
+      <section class="run" aria-label="Ejemplo de corrida de pruebas de mis proyectos">
+        <div class="run-head">Corrida de pruebas <span>dispositivos reales</span></div>
+        <p class="suite">Tijerapp</p>
+        <ul>
+          <li style="--i:0"><span class="ico">✓</span><span>Venta con varios servicios en PC, tablet y celular</span><span class="st">pasó</span></li>
+          <li style="--i:1"><span class="ico">✓</span><span>Turno online confirmado desde la caja</span><span class="st">pasó</span></li>
+          <li style="--i:2"><span class="ico">✓</span><span>Compra de licencia con Mercado Pago</span><span class="st">pasó</span></li>
+          <li style="--i:3"><span class="ico swap"><span class="was">✗</span><span class="now">✓</span></span><span>Turnos grupales sin IDs duplicados</span><span class="st swap"><span class="was">falla</span><span class="now">corregido</span></span></li>
+        </ul>
+        <p class="suite">RolCam</p>
+        <ul>
+          <li style="--i:4"><span class="ico">✓</span><span>Seguimiento estable en una PC de 4 GB</span><span class="st">pasó</span></li>
+          <li style="--i:5"><span class="ico">✓</span><span>Sala conectada entre dos PC</span><span class="st">pasó</span></li>
+          <li style="--i:6"><span class="ico">✓</span><span>El instalador registra la cámara virtual</span><span class="st">pasó</span></li>
+        </ul>
+        <p class="run-foot">Una falla encontrada, corregida y vuelta a probar.</p>
+      </section>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="band" id="proyectos">
+    <div class="wrap">
+      <h2>Proyectos</h2>
+      <p class="lead">Dos productos que diseñé, probé y publiqué en 2026. El código lo escribió la IA; las decisiones, las pruebas y la publicación son mías.</p>
+
+      <article class="proj">
+        <figure class="shot tij">
+          <span class="ph">Tijerapp</span>
+          <img src="img/tijerapp.jpg" alt="Caja de Tijerapp en la PC y panel del barbero en el celular" onerror="this.remove()">
+        </figure>
+        <div>
+          <h3>Tijerapp</h3>
+          <p class="kind">Sistema de gestión para barberías y peluquerías</p>
+          <p class="desc">Caja, clientes, barberos, comisiones, turnos y métricas. Funciona en una PC con servidor local, en una tablet Android sin PC y en los celulares de los barberos, conectados por el wifi del local.</p>
+          <h4>Qué probé</h4>
+          <ul class="checks">
+            <li>Ventas con varios servicios y turnos grupales, en PC, tablet y celular.</li>
+            <li>Turnos online: el cliente pide, la caja confirma y avisa por WhatsApp.</li>
+            <li>Compra de licencia con Mercado Pago, desde la app y desde el sitio.</li>
+            <li>Demo web con límites: hasta 3 ventas, 3 barberos y 3 clientes.</li>
+          </ul>
+          <ul class="chips" aria-label="Tecnologías">
+            <li>React</li><li>Node.js</li><li>Android</li><li>GitHub Actions</li><li>Cloudflare</li><li>Mercado Pago</li>
+          </ul>
+          <div class="links">
+            <a href="https://tijerapp.com.ar" target="_blank" rel="noopener">Ver sitio y demo</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="proj">
+        <figure class="shot rol">
+          <span class="ph">RolCam</span>
+          <img src="img/rolcam.jpg" alt="Mesa del Dungeon Master en RolCam, con ocho jugadores" onerror="this.remove()">
+        </figure>
+        <div>
+          <h3>RolCam</h3>
+          <p class="kind">Programa open source para jugar rol por Discord</p>
+          <p class="desc">Reemplaza la imagen de tu cámara por tu personaje, que copia tus movimientos. El Dungeon Master maneja los sonidos de ambiente y el fondo de toda la mesa.</p>
+          <h4>Qué probé</h4>
+          <ul class="checks">
+            <li>Seguimiento del cuerpo en una PC de gama baja (Celeron, 4 GB) y en una con RTX 5060.</li>
+            <li>Carga de modelos 3D VRM, GLB y FBX, donde encontré deformaciones en armas y escudos.</li>
+            <li>Sala con conexión directa entre dos PC reales: sonidos y fondo compartidos.</li>
+            <li>Instalador de Windows que registra la cámara virtual por su cuenta.</li>
+          </ul>
+          <ul class="chips" aria-label="Tecnologías y características">
+            <li>Seguimiento por cámara</li><li>Modelos 3D</li><li>Cámara virtual</li><li>GitHub Actions</li><li>Licencia GPL-3.0</li>
+          </ul>
+          <div class="links">
+            <a href="https://github.com/juanmstorni-bot/rolcam" target="_blank" rel="noopener">Ver en GitHub</a>
+            <a href="https://github.com/juanmstorni-bot/rolcam/releases" target="_blank" rel="noopener">Descargar la versión 1.0</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="band method" id="como-pruebo">
+    <div class="wrap">
+      <h2>Cómo pruebo</h2>
+      <p class="lead">El mismo proceso que usé en medios de pago lo aplico a mis proyectos.</p>
+      <ol class="steps">
+        <li><b>Entiendo el producto</b><p>Defino para quién es y qué tiene que pasar en cada pantalla antes de probar nada.</p></li>
+        <li><b>Escribo los casos</b><p>Cada caso con su resultado esperado, incluidos los caminos raros: datos vacíos, horarios pasados, dos usuarios a la vez.</p></li>
+        <li><b>Pruebo en equipos reales</b><p>PC de gama baja y alta, tablets y celulares Android. Lo que anda en un equipo no siempre anda en otro.</p></li>
+        <li><b>Reporto y verifico</b><p>Cada falla con los pasos para reproducirla. Después de la corrección, vuelvo a probar y reviso que no se rompa otra cosa.</p></li>
+      </ol>
+      <div class="ai">
+        <b>Sobre la IA</b>
+        <p>Desarrollo con vibe coding: la IA escribe el código y yo decido qué se construye, lo pruebo y lo publico. Es la misma mirada que tengo como QA: nada funciona hasta que lo compruebo.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="experiencia">
+    <div class="wrap">
+      <h2>Experiencia</h2>
+      <ol class="jobs">
+        <li><time>2026 – hoy</time><div><b>QA y desarrollador independiente</b><span>Proyectos propios · Remoto</span><p>Diseño, pruebo y publico Tijerapp y RolCam: pruebas funcionales y de regresión, pruebas de rendimiento, pruebas de pagos y publicación con GitHub y Cloudflare.</p></div></li>
+        <li><time>2022 – 2024</time><div><b>QA</b><span>Qualis Lab · Remoto</span><p>Pruebas funcionales en terminales de pago legacy y Android, y pruebas de frontend y backend para el alta de usuarios de tarjetas de crédito y débito. Planificación y ejecución de casos de prueba, reporte y seguimiento de bugs, con metodologías ágiles.</p></div></li>
+        <li><time>2013 – 2018</time><div><b>Soporte técnico</b><span>Centro de Operaciones Municipal, Malvinas Argentinas</span><p>Mantenimiento de las estaciones de monitoreo, soporte de cámaras de seguridad y del almacenamiento de video, e instalación de domos.</p></div></li>
+      </ol>
+      <div class="tools">
+        <h4>Herramientas</h4>
+        <ul class="chips">
+          <li>Postman</li><li>Swagger</li><li>Jira</li><li>Azure DevOps</li><li>Android Studio</li><li>SQL</li><li>Git y GitHub</li><li>Scrum</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="band method" id="certificaciones">
+    <div class="wrap">
+      <h2>Certificaciones</h2>
+      <ul class="certs">
+        <li>Tester QA Experto, EducacionIT <small>2026</small></li>
+        <li>Scrum Foundation Professional, CertiProf <small>2023</small></li>
+        <li>Postman API Fundamentals Student Expert <small>2023</small></li>
+        <li>Introduction to Cybersecurity, Cisco <small>2023</small></li>
+        <li>Programación con SQL Server 2019, EducacionIT <small>2022</small></li>
+        <li>Microsoft Azure Data Fundamentals <small>2022</small></li>
+        <li>Microsoft Azure Fundamentals <small>2022</small></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="band contact" id="contacto">
+    <div class="wrap">
+      <h2>Contacto</h2>
+      <p class="lead">Busco un puesto de QA remoto en una empresa de habla hispana. Escribime por donde te quede más cómodo.</p>
+      <ul class="ways">
+        <li><a href="mailto:juanmstorni@gmail.com"><span>Email</span><b>juanmstorni@gmail.com</b></a></li>
+        <li><a href="https://wa.me/541170607492" target="_blank" rel="noopener"><span>WhatsApp</span><b>+54 11 7060-7492</b></a></li>
+        <li><a href="https://www.linkedin.com/in/juanmstorni" target="_blank" rel="noopener"><span>LinkedIn</span><b>in/juanmstorni</b></a></li>
+        <li><a href="https://github.com/juanmstorni-bot" target="_blank" rel="noopener"><span>GitHub</span><b>juanmstorni-bot</b></a></li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">© 2026 Juan Storni. Sitio hecho con IA y probado por mí.</div>
+</footer>
+
+</body>
+</html>
